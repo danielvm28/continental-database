@@ -5,7 +5,7 @@ import exception.DuplicateValueException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AVLTree<T extends Comparable<T>> {
+public class AVLTree<T extends Comparable<T>> implements AVLTreeI<T>{
     private Node<T> root;
     private Comparator<T> c;
     private ArrayList<T> preorderArray;
@@ -45,12 +45,12 @@ public class AVLTree<T extends Comparable<T>> {
         this.c = c;
     }
 
-    public void setPreorderArray(ArrayList<T> preorderArray) {
-        this.preorderArray = preorderArray;
-    }
-
     public ArrayList<T> getPreorderArray() {
         return preorderArray;
+    }
+
+    public void setPreorderArray(ArrayList<T> preorderArray) {
+        this.preorderArray = preorderArray;
     }
 
     public int getSize() {
@@ -61,18 +61,22 @@ public class AVLTree<T extends Comparable<T>> {
         this.size = size;
     }
 
+    @Override
     public void updateHeightOfNode(Node<T> n) {
         n.setHeight(1 + Math.max(heightOfNode(n.getLeft()), heightOfNode(n.getRight())));
     }
 
+    @Override
     public int heightOfNode(Node<T> n) {
         return n == null ? -1 : n.getHeight();
     }
 
+    @Override
     public int balanceOfNode(Node<T> n) {
         return n == null ? 0 : heightOfNode(n.getRight()) - heightOfNode(n.getLeft());
     }
 
+    @Override
     public Node<T> rotateRight(Node<T> n) {
         Node<T> x = n.getLeft();
         Node<T> y = x.getRight();
@@ -86,6 +90,7 @@ public class AVLTree<T extends Comparable<T>> {
         return x; // Returns the new head of the subtree
     }
 
+    @Override
     public Node<T> rotateLeft(Node<T> n) {
         Node<T> x = n.getRight();
         Node<T> y = x.getLeft();
@@ -102,6 +107,7 @@ public class AVLTree<T extends Comparable<T>> {
     // Insert methods
     //-------------------------------------------------------------------------------------------------------
 
+    @Override
     /**
      * Inserts from the root. Determines if the insertion is by means of natural comparison or manual comparison
      * @param value the value to insert
@@ -165,6 +171,7 @@ public class AVLTree<T extends Comparable<T>> {
 
     //-------------------------------------------------------------------------------------------------------
 
+    @Override
     public Node<T> balance(Node<T> n) {
         updateHeightOfNode(n);
 
@@ -197,6 +204,7 @@ public class AVLTree<T extends Comparable<T>> {
     // Find methods
     //-------------------------------------------------------------------------------------------------------
 
+    @Override
     /**
      * Finds from the root. Determines if the finding is by means of natural comparison or manual comparison
      * @param value the value that needs to be found
@@ -293,6 +301,7 @@ public class AVLTree<T extends Comparable<T>> {
     // Delete methods
     //-------------------------------------------------------------------------------------------------------
 
+    @Override
     /**
      * Deletes from the root. Determines if the deletion is by means of natural comparison or manual comparison
      * @param value the value to delete
@@ -392,6 +401,7 @@ public class AVLTree<T extends Comparable<T>> {
     //-------------------------------------------------------------------------------------------------------
 
     // To get the most left child or successor
+    @Override
     public Node<T> mostLeftChild(Node<T> n) {
         while (n.getLeft() != null) {
             n = n.getLeft();

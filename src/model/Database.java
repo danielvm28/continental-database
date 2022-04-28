@@ -9,14 +9,16 @@ import java.util.*;
 
 public class Database {
     // Static tree structures
-    public static HashSet<Integer> codeSet;
     public static AVLTree<Person> fullNameAVLTree;
     public static AVLTree<Person> nameAVLTree;
     public static AVLTree<Person> lastNameAVLTree;
     public static AVLTree<Person> codeAVLTree;
 
+    public static final int MAX_RECORDS = 1000000;
+
     // private attributes for serialization
     private int recordsNum;
+    private HashSet<Integer> codeSet;
     private ArrayList<Person> fullNameAVLLogs;
     private ArrayList<Person> nameAVLLogs;
     private ArrayList<Person> lastNameAVLLogs;
@@ -37,7 +39,7 @@ public class Database {
 
     public Database() {
         // Default records value
-        this.recordsNum = 1000000;
+        this.recordsNum = MAX_RECORDS;
 
         fullNameAVLLogs = new ArrayList<>();
         nameAVLLogs = new ArrayList<>();
@@ -441,6 +443,12 @@ public class Database {
             FileOutputStream fos4 = new FileOutputStream(file4);
             fos4.write(json4.getBytes());
             fos4.close();
+
+            String json5 = gson.toJson(codeSet);
+            File file5 = new File("data/codesUsed.json");
+            FileOutputStream fos5 = new FileOutputStream(file5);
+            fos5.write(json5.getBytes());
+            fos5.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -451,8 +459,32 @@ public class Database {
         loadJSON("data/logsName.json", 2);
         loadJSON("data/logsLastName.json", 3);
         loadJSON("data/logsCode.json", 4);
+        loadCodesJSON();
 
         initializeTreesWithSavedLogs();
+    }
+
+    private void loadCodesJSON() {
+        try{
+            FileInputStream fis = new FileInputStream(new File("data/codesUsed.json"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+            String json = "";
+            String line;
+
+            while((line = reader.readLine()) != null) {
+                json += line;
+            }
+
+            Gson gson = new Gson();
+            HashSet<Integer> data = gson.fromJson(json, HashSet.class);
+
+            if (data != null) {
+                codeSet = data;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadJSON(String path, int logsOption) {

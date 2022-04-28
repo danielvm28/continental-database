@@ -10,14 +10,18 @@ import model.Database;
 
 public class Main extends Application{
     public static void main(String[] args) {
-        Database database = new Database();
-        database.loadJSON();
+//        Database database = new Database();
+//        database.loadJSON();
 
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loadMainWindow();
+    }
+
+    public static void loadMainWindow() throws java.io.IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/MainWindow.fxml"));
         loader.setController(new MainController());
         Parent parent = (Parent) loader.load();
