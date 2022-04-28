@@ -2,16 +2,28 @@ package model;
 
 import exception.DuplicateValueException;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class AVLTree<T extends Comparable<T>> {
     private Node<T> root;
     private Comparator<T> c;
+    private ArrayList<T> preorderArray;
+    private int size;
 
+    /**
+     * Constructor that makes the tree work with natural ordering
+     */
     public AVLTree() {
+        c = null;
         root = null;
+        preorderArray = new ArrayList<>();
     }
 
+    /**
+     * Constructor that makes the tree work with manual ordering via Comparator interface
+     * @param c the comparator method to insert, delete and find
+     */
     public AVLTree(Comparator<T> c) {
         this.c = c;
         root = null;
@@ -23,6 +35,30 @@ public class AVLTree<T extends Comparable<T>> {
 
     public void setRoot(Node<T> root) {
         this.root = root;
+    }
+
+    public Comparator<T> getC() {
+        return c;
+    }
+
+    public void setC(Comparator<T> c) {
+        this.c = c;
+    }
+
+    public void setPreorderArray(ArrayList<T> preorderArray) {
+        this.preorderArray = preorderArray;
+    }
+
+    public ArrayList<T> getPreorderArray() {
+        return preorderArray;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public void updateHeightOfNode(Node<T> n) {
@@ -67,22 +103,18 @@ public class AVLTree<T extends Comparable<T>> {
     //-------------------------------------------------------------------------------------------------------
 
     /**
-     * Inserts from the root, this is the standard insertion method that uses natural object comparison
+     * Inserts from the root. Determines if the insertion is by means of natural comparison or manual comparison
      * @param value the value to insert
      * @throws DuplicateValueException throw if a duplicate value is encountered
      */
     public void insert(T value) throws DuplicateValueException {
-        root = insert(root, value);
-    }
+        if (c == null) {
+            root = insertNatural(root, value);
+        } else {
+            root = insertManual(root, value);
+        }
 
-    /**
-     * Inserts from the root, this is the custom method to insert a node through a comparator method
-     * @param value the value to insert
-     * @param c the comparator method to compare manually
-     * @throws DuplicateValueException throw if a duplicate value is encountered
-     */
-    public void insert(T value, Comparator<T> c) throws DuplicateValueException {
-        root = insert(root, value, c);
+        size++;
     }
 
     /**
@@ -92,15 +124,15 @@ public class AVLTree<T extends Comparable<T>> {
      * @return a balanced node
      * @throws DuplicateValueException throw if a duplicate value is encountered
      */
-    private Node<T> insert(Node<T> n, T value) throws DuplicateValueException{
+    private Node<T> insertNatural(Node<T> n, T value) throws DuplicateValueException{
         // Search the place to insert the new node,
         if (n == null) {
             n = new Node<>(value);
             return n;
         } else if(n.getValue().compareTo(value) > 0) {
-            n.setLeft(insert(n.getLeft(), value));
+            n.setLeft(insertNatural(n.getLeft(), value));
         } else if (n.getValue().compareTo(value) < 0) {
-            n.setRight(insert(n.getRight(), value));
+            n.setRight(insertNatural(n.getRight(), value));
         } else {
             throw new DuplicateValueException();
         }
@@ -112,19 +144,18 @@ public class AVLTree<T extends Comparable<T>> {
      * Inserts from the node n, mainly used for recursion. This method inserts in a custom way
      * @param n actual node
      * @param value value to insert
-     * @param c the comparator method to compare manually
      * @return a balanced node
      * @throws DuplicateValueException throw if a duplicate value is encountered
      */
-    private Node<T> insert(Node<T> n, T value, Comparator<T> c) throws DuplicateValueException{
+    private Node<T> insertManual(Node<T> n, T value) throws DuplicateValueException{
         // Search the place to insert the new node,
         if (n == null) {
             n = new Node<>(value);
             return n;
         } else if(c.compare(n.getValue(), value) > 0) {
-            n.setLeft(insert(n.getLeft(), value, c));
+            n.setLeft(insertManual(n.getLeft(), value));
         } else if (c.compare(n.getValue(), value) < 0) {
-            n.setRight(insert(n.getRight(), value, c));
+            n.setRight(insertManual(n.getRight(), value));
         } else {
             throw new DuplicateValueException();
         }
@@ -167,22 +198,16 @@ public class AVLTree<T extends Comparable<T>> {
     //-------------------------------------------------------------------------------------------------------
 
     /**
-     * Finds from the root, this is the standard method to find a node that uses natural object comparison
+     * Finds from the root. Determines if the finding is by means of natural comparison or manual comparison
      * @param value the value that needs to be found
      * @return the coincident node
      */
     public Node<T> find(T value) {
-        return find(root, value);
-    }
-
-    /**
-     * Finds from the root, this is the custom method to find a node through a comparator method
-     * @param value the value that needs to be found
-     * @param c the function used to compare manually
-     * @return the coincident node
-     */
-    public Node<T> find(T value, Comparator<T> c) {
-        return find(root, value, c);
+        if (c == null) {
+            return findNatural(root, value);
+        } else {
+            return findManual(root, value);
+        }
     }
 
     /**
@@ -191,7 +216,7 @@ public class AVLTree<T extends Comparable<T>> {
      * @param value the value to find
      * @return the coincident node
      */
-    private Node<T> find(Node<T> n, T value) {
+    private Node<T> findNatural(Node<T> n, T value) {
         // Base cases
         if (n == null) {
             return null;
@@ -202,20 +227,19 @@ public class AVLTree<T extends Comparable<T>> {
 
         // Recursion
         if (n.getValue().compareTo(value) > 0) { // Search left
-            return find(n.getLeft(), value);
+            return findNatural(n.getLeft(), value);
         } else { // Search right
-            return find(n.getRight(), value);
+            return findNatural(n.getRight(), value);
         }
     }
 
     /**
-     * Finds from the node n, used for recursion. This method finds in a custom way
+     * Finds from the node n, used for recursion. Uses the Comparator c of the class to compare
      * @param n the actual node
      * @param value the value to find
-     * @param c the function used to compare manually
      * @return the coincident node
      */
-    private Node<T> find(Node<T> n, T value, Comparator<T> c) {
+    private Node<T> findManual(Node<T> n, T value) {
         // Base cases
         if (n == null) {
             return null;
@@ -226,9 +250,43 @@ public class AVLTree<T extends Comparable<T>> {
 
         // Recursion
         if (c.compare(n.getValue(), value) > 0) { // Search left
-            return find(n.getLeft(), value, c);
+            return findManual(n.getLeft(), value);
         } else { // Search right
-            return find(n.getRight(), value, c);
+            return findManual(n.getRight(), value);
+        }
+    }
+
+    /**
+     * Finds from the root, this is the custom method to find a node through a given comparator method
+     * @param value the value that needs to be found
+     * @param comp the function used to compare manually
+     * @return the coincident node
+     */
+    public Node<T> find(T value, Comparator<T> comp) {
+        return findManual(root, value, comp);
+    }
+
+    /**
+     * Finds from the node n, used for recursion. This method finds in a custom way
+     * @param n the actual node
+     * @param value the value to find
+     * @param comp the function used to compare manually
+     * @return the coincident node
+     */
+    private Node<T> findManual(Node<T> n, T value, Comparator<T> comp) {
+        // Base cases
+        if (n == null) {
+            return null;
+        }
+        if (comp.compare(n.getValue(), value) == 0) {
+            return n;
+        }
+
+        // Recursion
+        if (comp.compare(n.getValue(), value) > 0) { // Search left
+            return findManual(n.getLeft(), value, comp);
+        } else { // Search right
+            return findManual(n.getRight(), value, comp);
         }
     }
 
@@ -236,20 +294,17 @@ public class AVLTree<T extends Comparable<T>> {
     //-------------------------------------------------------------------------------------------------------
 
     /**
-     * Deletes from the root, this is the standard method to delete a node that uses natural object comparison
+     * Deletes from the root. Determines if the deletion is by means of natural comparison or manual comparison
      * @param value the value to delete
      */
     public void delete(T value) {
-        root = delete(root, value);
-    }
+        if(c == null){
+            root = deleteNatural(root, value);
+        } else {
+            root = deleteManual(root, value);
+        }
 
-    /**
-     * Deletes from the root, this is the custom method to delete a node through a comparator method
-     * @param value the value to delete
-     * @param c the function used to compare manually
-     */
-    public void delete(T value, Comparator<T> c) {
-        root = delete(root, value);
+        size--;
     }
 
     /**
@@ -258,15 +313,15 @@ public class AVLTree<T extends Comparable<T>> {
      * @param value the Person value to delete
      * @return a balanced node after deletion
      */
-    private Node<T> delete(Node<T> n, T value) {
+    private Node<T> deleteNatural(Node<T> n, T value) {
         if (n == null) {
             return null;
         }
 
         if (n.getValue().compareTo(value) > 0) { // Search left
-            n.setLeft(delete(n.getLeft(), value));
+            n.setLeft(deleteNatural(n.getLeft(), value));
         } else if (n.getValue().compareTo(value) < 0) { // Search right
-            n.setRight(delete(n.getRight(), value));
+            n.setRight(deleteNatural(n.getRight(), value));
         } else { // If the value is found
 
             // In case the node has none, or just one child
@@ -281,7 +336,7 @@ public class AVLTree<T extends Comparable<T>> {
                 n.setValue(mostLeftChild.getValue());
 
                 // Delete the successor recursively
-                n.setRight(delete(n.getRight(), n.getValue()));
+                n.setRight(deleteNatural(n.getRight(), n.getValue()));
             }
 
         }
@@ -297,18 +352,17 @@ public class AVLTree<T extends Comparable<T>> {
      * Deletes from the node n, used for recursion. This method deletes in a custom way
      * @param n the actual node
      * @param value the Person value to delete
-     * @param c the function used to compare manually
      * @return a balanced node after deletion
      */
-    private Node<T> delete(Node<T> n, T value, Comparator<T> c) {
+    private Node<T> deleteManual(Node<T> n, T value) {
         if (n == null) {
             return null;
         }
 
         if (c.compare(n.getValue(), value) > 0) { // Search left
-            n.setLeft(delete(n.getLeft(), value, c));
+            n.setLeft(deleteManual(n.getLeft(), value));
         } else if (c.compare(n.getValue(), value) < 0) { // Search right
-            n.setRight(delete(n.getRight(), value, c));
+            n.setRight(deleteManual(n.getRight(), value));
         } else { // If the value is found
 
             // In case the node has none, or just one child
@@ -323,7 +377,7 @@ public class AVLTree<T extends Comparable<T>> {
                 n.setValue(mostLeftChild.getValue());
 
                 // Delete the successor recursively
-                n.setRight(delete(n.getRight(), n.getValue(), c));
+                n.setRight(deleteManual(n.getRight(), n.getValue()));
             }
 
         }
@@ -344,6 +398,27 @@ public class AVLTree<T extends Comparable<T>> {
         }
 
         return n;
+    }
+
+    public ArrayList<T> generatePreorderArray(){
+        preorderArray = new ArrayList<>();
+        generatePreorderArray(root);
+        return getPreorderArray();
+    }
+
+    private void generatePreorderArray(Node<T> node)
+    {
+        if (node == null)
+            return;
+
+        // Add value of node to ArrayList
+        preorderArray.add(node.getValue());
+
+        // Go through left subtree
+        generatePreorderArray(node.getLeft());
+
+        // Go through right subtree
+        generatePreorderArray(node.getRight());
     }
 
     public final int COUNT = 10;

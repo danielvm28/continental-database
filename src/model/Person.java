@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Person implements Comparable<Person>{
     // Attributes
-    private String code;
+    private int code;
     private String fullName;
     private String gender;
     private LocalDate birthDate;
@@ -12,7 +12,7 @@ public class Person implements Comparable<Person>{
     private String nationality;
     // Photo missing
 
-    public Person(String fullName, String gender, LocalDate birthDate, double height, String nationality, String code) {
+    public Person(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) {
         this.fullName = fullName;
         this.gender = gender;
         this.birthDate = birthDate;
@@ -21,11 +21,11 @@ public class Person implements Comparable<Person>{
         this.code = code;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -80,7 +80,7 @@ public class Person implements Comparable<Person>{
         fullNameOutput = A.fullName.compareTo(B.fullName);
 
         if (fullNameOutput == 0) {
-            codeOutput = A.code.compareTo(B.code);
+            codeOutput = A.code - B.code;
 
             return codeOutput;
         } else {
@@ -89,6 +89,6 @@ public class Person implements Comparable<Person>{
     }
 
     public String toString() {
-        return code;
+        return fullName + " " + code;
     }
 }
