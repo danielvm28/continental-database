@@ -21,6 +21,15 @@ public class Person implements Comparable<Person>{
         this.code = code;
     }
 
+    // Constructors to find partial results of emergent list
+    public Person(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Person(int code) {
+        this.code = code;
+    }
+
     public int getCode() {
         return code;
     }
@@ -89,6 +98,6 @@ public class Person implements Comparable<Person>{
     }
 
     public String toString() {
-        return fullName + " " + code;
+        return fullName + " | " + code;
     }
 }

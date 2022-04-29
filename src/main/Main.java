@@ -6,13 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Database;
 
 public class Main extends Application{
     public static void main(String[] args) {
-//        Database database = new Database();
-//        database.loadJSON();
-
         launch(args);
     }
 

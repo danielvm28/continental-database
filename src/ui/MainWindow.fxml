@@ -20,6 +20,7 @@
                   <MenuItem fx:id="loadPrevITEM" mnemonicParsing="false" onAction="#loadJSON" text="Load Previous Logs" />
                   <MenuItem fx:id="saveITEM" mnemonicParsing="false" onAction="#saveJSON" text="Save Logs" />
                   <MenuItem fx:id="saveExitITEM" mnemonicParsing="false" onAction="#exitSaveJSON" text="Save and Exit" />
+                  <MenuItem fx:id="deleteLogsITEM" mnemonicParsing="false" onAction="#deleteLogs" text="Delete Logs" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Database">
@@ -30,14 +31,22 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextField layoutX="37.0" layoutY="77.0" prefHeight="25.0" prefWidth="349.0" promptText="Type" />
-      <ComboBox fx:id="searchCBX" layoutX="448.0" layoutY="171.0" prefHeight="25.0" prefWidth="165.0" promptText="Select Search Criteria" />
+      <TextField fx:id="searchBar" layoutX="37.0" layoutY="77.0" prefHeight="25.0" prefWidth="349.0" promptText="Search" />
+      <ComboBox fx:id="searchCBX" layoutX="440.0" layoutY="77.0" onAction="#clearSearchBar" prefHeight="25.0" prefWidth="165.0" promptText="Select Search Criteria" />
       <Text layoutX="211.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Continental Database Tool" textAlignment="CENTER" wrappingWidth="234.99999105930328">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
       <ListView fx:id="emergentList" layoutX="37.0" layoutY="102.0" prefHeight="200.0" prefWidth="349.0" />
-      <Button fx:id="getResultsBTN" layoutX="493.0" layoutY="134.0" mnemonicParsing="false" onAction="#getResults" style="-fx-background-color: #3d9fff;" text="Get Results" textFill="WHITE" />
+      <Button fx:id="getResultsBTN" layoutX="468.0" layoutY="235.0" mnemonicParsing="false" onAction="#getResults" prefHeight="44.0" prefWidth="109.0" style="-fx-background-color: #3d9fff;" text="Get Results" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Text layoutX="447.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enabled at 20 coincidences or less" textAlignment="CENTER" wrappingWidth="151.509765625">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

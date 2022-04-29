@@ -3,13 +3,14 @@ package model;
 import com.google.gson.Gson;
 import exception.DuplicateValueException;
 import javafx.util.Pair;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
 public class Database {
     // Static tree structures
-    public static AVLTree<Person> fullNameAVLTree;
+    public static AVLTree<Person> fullNameAVLTree = new AVLTree<>();
     public static AVLTree<Person> nameAVLTree;
     public static AVLTree<Person> lastNameAVLTree;
     public static AVLTree<Person> codeAVLTree;
@@ -19,19 +20,11 @@ public class Database {
     // private attributes for serialization
     private int recordsNum;
     private HashSet<Integer> codeSet;
-    private ArrayList<Person> fullNameAVLLogs;
-    private ArrayList<Person> nameAVLLogs;
-    private ArrayList<Person> lastNameAVLLogs;
-    private ArrayList<Person> codeAVLLogs;
+    private ArrayList<Person> avlLogs;
 
     public Database(int recordsNum) {
         this.recordsNum = recordsNum;
-        fullNameAVLLogs = new ArrayList<>();
-        nameAVLLogs = new ArrayList<>();
-        lastNameAVLLogs = new ArrayList<>();
-        codeAVLLogs = new ArrayList<>();
-
-        fullNameAVLTree = new AVLTree<>();
+        avlLogs = new ArrayList<>();
         codeSet = new HashSet<>();
 
         generateComparators();
@@ -40,13 +33,7 @@ public class Database {
     public Database() {
         // Default records value
         this.recordsNum = MAX_RECORDS;
-
-        fullNameAVLLogs = new ArrayList<>();
-        nameAVLLogs = new ArrayList<>();
-        lastNameAVLLogs = new ArrayList<>();
-        codeAVLLogs = new ArrayList<>();
-
-        fullNameAVLTree = new AVLTree<>();
+        avlLogs = new ArrayList<>();
         codeSet = new HashSet<>();
 
         generateComparators();
@@ -318,7 +305,7 @@ public class Database {
             }
 
             // Generate the preorder arrays after the generation of logs is finished
-            generatePreorderArrays();
+            generatePreorderArray();
 
         } catch (IOException | DuplicateValueException e) {
             e.printStackTrace();
@@ -377,13 +364,10 @@ public class Database {
     }
 
     /**
-     * Generates the preorder arrays with the AVL Tree info provided
+     * Generates the preorder array with the AVL Tree info provided
      */
-    public void generatePreorderArrays(){
-        fullNameAVLLogs = fullNameAVLTree.generatePreorderArray();
-        nameAVLLogs = nameAVLTree.generatePreorderArray();
-        lastNameAVLLogs = lastNameAVLTree.generatePreorderArray();
-        codeAVLLogs = codeAVLTree.generatePreorderArray();
+    public void generatePreorderArray(){
+        avlLogs = fullNameAVLTree.generatePreorderArray();
     }
 
     /**
@@ -392,25 +376,12 @@ public class Database {
     public void initializeTreesWithSavedLogs(){
         try {
             for (Person p :
-                    fullNameAVLLogs) {
+                    avlLogs) {
                 fullNameAVLTree.insert(p);
-            }
-
-            for (Person p :
-                    nameAVLLogs) {
                 nameAVLTree.insert(p);
-            }
-
-            for (Person p :
-                    lastNameAVLLogs) {
                 lastNameAVLTree.insert(p);
-            }
-
-            for (Person p :
-                    codeAVLLogs) {
                 codeAVLTree.insert(p);
             }
-
         } catch (DuplicateValueException e) {
             e.printStackTrace();
         }
@@ -420,108 +391,40 @@ public class Database {
         try {
             Gson gson = new Gson();
 
-            String json = gson.toJson(fullNameAVLLogs);
-            File file = new File("data/logsFullName.json");
+            String json = gson.toJson(this);
+            File file = new File("data/logs.json");
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(json.getBytes());
             fos.close();
 
-            String json2 = gson.toJson(nameAVLLogs);
-            File file2 = new File("data/logsName.json");
-            FileOutputStream fos2 = new FileOutputStream(file2);
-            fos2.write(json2.getBytes());
-            fos2.close();
-
-            String json3 = gson.toJson(lastNameAVLLogs);
-            File file3 = new File("data/logsLastName.json");
-            FileOutputStream fos3 = new FileOutputStream(file3);
-            fos3.write(json3.getBytes());
-            fos3.close();
-
-            String json4 = gson.toJson(codeAVLLogs);
-            File file4 = new File("data/logsCode.json");
-            FileOutputStream fos4 = new FileOutputStream(file4);
-            fos4.write(json4.getBytes());
-            fos4.close();
-
-            String json5 = gson.toJson(codeSet);
-            File file5 = new File("data/codesUsed.json");
-            FileOutputStream fos5 = new FileOutputStream(file5);
-            fos5.write(json5.getBytes());
-            fos5.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void loadJSON() {
-        loadJSON("data/logsFullName.json", 1);
-        loadJSON("data/logsName.json", 2);
-        loadJSON("data/logsLastName.json", 3);
-        loadJSON("data/logsCode.json", 4);
-        loadCodesJSON();
+        try{
+            FileInputStream fis = new FileInputStream(new File("data/logs.json"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+            String json = "";
+            String line;
+
+            while((line = reader.readLine()) != null) {
+                json += line;
+            }
+
+            Gson gson = new Gson();
+            Database data = gson.fromJson(json, Database.class);
+
+            if (data != null) {
+                avlLogs = data.avlLogs;
+                codeSet = data.codeSet;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         initializeTreesWithSavedLogs();
-    }
-
-    private void loadCodesJSON() {
-        try{
-            FileInputStream fis = new FileInputStream(new File("data/codesUsed.json"));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
-            String json = "";
-            String line;
-
-            while((line = reader.readLine()) != null) {
-                json += line;
-            }
-
-            Gson gson = new Gson();
-            HashSet<Integer> data = gson.fromJson(json, HashSet.class);
-
-            if (data != null) {
-                codeSet = data;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadJSON(String path, int logsOption) {
-        try{
-            FileInputStream fis = new FileInputStream(new File(path));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
-            String json = "";
-            String line;
-
-            while((line = reader.readLine()) != null) {
-                json += line;
-            }
-
-            Gson gson = new Gson();
-            Person[] data = gson.fromJson(json, Person[].class);
-
-            if (data != null) {
-                switch (logsOption) {
-                    case 1:
-                        fullNameAVLLogs.addAll(Arrays.asList(data));
-                        break;
-                    case 2:
-                        nameAVLLogs.addAll(Arrays.asList(data));
-                        break;
-                    case 3:
-                        lastNameAVLLogs.addAll(Arrays.asList(data));
-                        break;
-                    case 4:
-                        codeAVLLogs.addAll(Arrays.asList(data));
-                        break;
-                }
-
-                recordsNum = fullNameAVLLogs.size();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

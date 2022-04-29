@@ -5,8 +5,4 @@ ContinentalDatabase.iml
 .project
 out
 bin
-data/logsCode.json
-data/logsFullName.json
-data/logsLastName.json
-data/logsName.json
-data/codesUsed.json
+data/logs.json

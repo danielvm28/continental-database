@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
-
 import java.io.IOException;
 
 public class GenerateController {
