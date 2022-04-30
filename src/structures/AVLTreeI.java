@@ -1,4 +1,4 @@
-package model;
+package structures;
 
 import exception.DuplicateValueException;
 

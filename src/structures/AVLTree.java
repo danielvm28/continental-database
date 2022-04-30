@@ -1,11 +1,11 @@
-package model;
+package structures;
 
 import exception.DuplicateValueException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AVLTree<T extends Comparable<T>> implements AVLTreeI<T>{
+public class AVLTree<T extends Comparable<T>> implements AVLTreeI<T> {
     private Node<T> root;
     private Comparator<T> c;
     private ArrayList<T> preorderArray;

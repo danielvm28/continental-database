@@ -1,8 +1,11 @@
 package model;
 
 import com.google.gson.Gson;
+import control.GenerateController;
+import control.MainController;
 import exception.DuplicateValueException;
 import javafx.util.Pair;
+import structures.AVLTree;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -107,7 +110,7 @@ public class Database {
         codeAVLTree = new AVLTree<>(codeComparator);
     }
 
-    public void generateRecords(){
+    public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
 
         try {
@@ -218,7 +221,7 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    System.out.println(recordsCounter);
+                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup2Iterations; j++) {
@@ -238,7 +241,7 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    System.out.println(recordsCounter);
+                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup3Iterations; j++) {
@@ -258,7 +261,7 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    System.out.println(recordsCounter);
+                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup4Iterations; j++) {
@@ -278,7 +281,7 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    System.out.println(recordsCounter);
+                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup5Iterations; j++) {
@@ -298,7 +301,7 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    System.out.println(recordsCounter);
+                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 nationCounter++;

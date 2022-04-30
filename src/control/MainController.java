@@ -1,5 +1,6 @@
 package control;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,11 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
-import model.Node;
+import structures.Node;
 import model.Person;
 import model.SearchMethod;
 import java.io.*;
@@ -32,13 +35,13 @@ public class MainController implements Initializable {
     private MenuItem saveExitITEM;
 
     @FXML
+    private MenuItem deleteLogsITEM;
+
+    @FXML
     private MenuItem generateITEM;
 
     @FXML
     private MenuItem addITEM;
-
-    @FXML
-    private MenuItem deleteLogsITEM;
 
     @FXML
     private TextField searchBar;
@@ -52,17 +55,34 @@ public class MainController implements Initializable {
     @FXML
     private Button getResultsBTN;
 
+    @FXML
+    private Label statusLabel;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    @FXML
+    private ImageView verificationImage;
+
     private HashMap<String, SearchMethod> searchMethodHashMap;
 
     private ArrayList<Person> coincidentRecords;
+
+    private Image checkImage;
+
+    private Image crossImage;
 
     public static final int MAX_SHOWN_COINCIDENCES = 100;
 
     public static final int MIN_ALLOWED_COINCIDENCES_RESULTS = 20;
 
+    public static boolean loadedData;
+
     public MainController(){
         searchMethodHashMap = new HashMap<>();
         coincidentRecords = new ArrayList<>();
+        checkImage = new Image("ui/check_icon.png");
+        crossImage = new Image("ui/x_icon.png");
         searchMethodHashMap.put("Full name", SearchMethod.FULL_NAME);
         searchMethodHashMap.put("Name", SearchMethod.NAME);
         searchMethodHashMap.put("Last name", SearchMethod.LAST_NAME);
@@ -72,6 +92,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getResultsBTN.setDisable(true);
+        progressIndicator.setVisible(false);
+        updateLoadStatus();
 
         // Checks if the data file is empty or not to disable the load previous logs item
         try {
@@ -131,15 +153,15 @@ public class MainController implements Initializable {
         switch (searchMethod) {
             case FULL_NAME:
                 findComp = (A, B) -> {
-                    int lengthSubstring = 0;
+                    int lengthSubstring = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (A.getFullName().length() < stringToFind.length()) {
+                    if (A.getFullName().length() < lengthSubstring) {
                         lengthSubstring = A.getFullName().length();
-                    } else if (B.getFullName().length() < stringToFind.length()){
+                    }
+
+                    if (B.getFullName().length() < lengthSubstring){
                         lengthSubstring = B.getFullName().length();
-                    } else {
-                        lengthSubstring = stringToFind.length();
                     }
 
                     String subFullNameA = A.getFullName().substring(0, lengthSubstring);
@@ -165,15 +187,15 @@ public class MainController implements Initializable {
                     String[] namesA = A.getFullName().split(" ");
                     String[] namesB = B.getFullName().split(" ");
 
-                    int lengthSubstring = 0;
+                    int lengthSubstring = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (namesA[0].length() < stringToFind.length()) {
+                    if (namesA[0].length() < lengthSubstring) {
                         lengthSubstring = namesA[0].length();
-                    } else if (namesB[0].length() < stringToFind.length()){
+                    }
+
+                    if (namesB[0].length() < lengthSubstring){
                         lengthSubstring = namesB[0].length();
-                    } else {
-                        lengthSubstring = stringToFind.length();
                     }
 
                     String subNameA = namesA[0].substring(0, lengthSubstring);
@@ -199,15 +221,15 @@ public class MainController implements Initializable {
                     String[] namesA = A.getFullName().split(" ");
                     String[] namesB = B.getFullName().split(" ");
 
-                    int lengthSubstring = 0;
+                    int lengthSubstring = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (namesA[1].length() < stringToFind.length()) {
+                    if (namesA[1].length() < lengthSubstring) {
                         lengthSubstring = namesA[1].length();
-                    } else if (namesB[1].length() < stringToFind.length()){
+                    }
+
+                    if (namesB[1].length() < lengthSubstring){
                         lengthSubstring = namesB[1].length();
-                    } else {
-                        lengthSubstring = stringToFind.length();
                     }
 
                     String subLastNameA = namesA[1].substring(0, lengthSubstring);
@@ -232,15 +254,15 @@ public class MainController implements Initializable {
                 int codeToFind = Integer.parseInt(stringToFind);
 
                 findComp = (A, B) -> {
-                    int lengthSubstring = 0;
+                    int lengthSubstring = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (String.valueOf(A.getCode()).length() < stringToFind.length()) {
+                    if (String.valueOf(A.getCode()).length() < lengthSubstring) {
                         lengthSubstring = String.valueOf(A.getCode()).length();
-                    } else if(String.valueOf(B.getCode()).length() < stringToFind.length()){
+                    }
+
+                    if(String.valueOf(B.getCode()).length() < lengthSubstring){
                         lengthSubstring = String.valueOf(B.getCode()).length();
-                    } else {
-                        lengthSubstring = stringToFind.length();
                     }
 
                     String subCodeA = String.valueOf(A.getCode()).substring(0, lengthSubstring);
@@ -286,6 +308,18 @@ public class MainController implements Initializable {
         subTreePreorder(node.getRight(), cnt, c, foundPerson);
     }
 
+    public void updateLoadStatus() {
+        verificationImage.setVisible(true);
+
+        if (!loadedData) {
+            verificationImage.setImage(crossImage);
+            statusLabel.setText("Logs not loaded");
+        } else {
+            verificationImage.setImage(checkImage);
+            statusLabel.setText("Logs loaded");
+        }
+    }
+
     @FXML
     void addRecord(ActionEvent event) {
 
@@ -316,6 +350,9 @@ public class MainController implements Initializable {
         if (result.get() == ButtonType.OK){
             PrintWriter pw = new PrintWriter("data/logs.json");
             pw.close();
+
+            loadedData = false;
+            updateLoadStatus();
         }
     }
 
@@ -344,17 +381,39 @@ public class MainController implements Initializable {
 
     @FXML
     void saveJSON(ActionEvent event) {
-        System.out.println("");
         Database database = new Database();
-        database.generatePreorderArray();
-        database.saveJSON();
-        System.out.println("done");
+
+        new Thread(() -> {
+            // Indicates that the process is in progress
+            statusLabel.setText("Saving data...");
+            verificationImage.setVisible(false);
+            progressIndicator.setVisible(true);
+
+            database.generatePreorderArray();
+            database.saveJSON();
+
+            loadedData = true;
+
+            Platform.runLater(this::updateLoadStatus);
+        }).start();
     }
 
     @FXML
     void loadJSON(ActionEvent event) {
         Database database = new Database();
-        database.loadJSON();
-        System.out.println("done");
+
+        statusLabel.setText("Loading data...");
+
+        new Thread(() -> {
+            // Indicates that the process is in progress
+            verificationImage.setVisible(false);
+            progressIndicator.setVisible(true);
+
+            database.loadJSON();
+
+            loadedData = true;
+            progressIndicator.setVisible(false);
+            Platform.runLater(this::updateLoadStatus);
+        }).start();
     }
 }

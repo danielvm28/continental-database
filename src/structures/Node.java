@@ -1,4 +1,4 @@
-package model;
+package structures;
 
 public class Node<T> {
     private T value;
