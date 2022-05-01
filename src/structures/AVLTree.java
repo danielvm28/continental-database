@@ -61,6 +61,10 @@ public class AVLTree<T extends Comparable<T>> implements AVLTreeI<T> {
         this.size = size;
     }
 
+    public void clearTree() {
+        root = null;
+    }
+
     @Override
     public void updateHeightOfNode(Node<T> n) {
         n.setHeight(1 + Math.max(heightOfNode(n.getLeft()), heightOfNode(n.getRight())));

@@ -38,6 +38,9 @@ public class MainController implements Initializable {
     private MenuItem deleteLogsITEM;
 
     @FXML
+    private MenuItem deletePrevLogsITEM;
+
+    @FXML
     private MenuItem generateITEM;
 
     @FXML
@@ -93,22 +96,10 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         getResultsBTN.setDisable(true);
         progressIndicator.setVisible(false);
+
+        // Checks the status of the loaded logs to disable or enable buttons
         updateLoadStatus();
 
-        // Checks if the data file is empty or not to disable the load previous logs item
-        try {
-            FileInputStream fis = new FileInputStream(new File("data/logs.json"));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
-            String line;
-
-            if ((line = reader.readLine()) == null) {
-                loadPrevITEM.setDisable(true);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         // Converts the HashMap keys to an array in order to add them to the ComboBox
         String[] arr = {"Full name", "Name", "Last name", "Code"};
@@ -134,11 +125,7 @@ public class MainController implements Initializable {
                 emergentList.setItems(coincidentRecordsObs);
 
                 //Check if the Results Button can be enabled or not
-                if (coincidentRecords.size() <= MIN_ALLOWED_COINCIDENCES_RESULTS && coincidentRecords.size() > 0) {
-                    getResultsBTN.setDisable(false);
-                } else {
-                    getResultsBTN.setDisable(true);
-                }
+                getResultsBTN.setDisable(coincidentRecords.size() > MIN_ALLOWED_COINCIDENCES_RESULTS || coincidentRecords.size() <= 0);
             }
         });
     }
@@ -308,16 +295,60 @@ public class MainController implements Initializable {
         subTreePreorder(node.getRight(), cnt, c, foundPerson);
     }
 
+    // Checks the status of the loaded logs to disable or enable buttons
     public void updateLoadStatus() {
         verificationImage.setVisible(true);
+        progressIndicator.setVisible(false);
 
         if (!loadedData) {
             verificationImage.setImage(crossImage);
             statusLabel.setText("Logs not loaded");
+            deleteLogsITEM.setDisable(true);
+            saveITEM.setDisable(true);
+            saveExitITEM.setDisable(true);
+
+            // Checks the status of the JSON file
+            if (arePrevLogsAvailable()) {
+                loadPrevITEM.setDisable(false);
+            } else {
+                loadPrevITEM.setDisable(true);
+                deletePrevLogsITEM.setDisable(true);
+            }
         } else {
             verificationImage.setImage(checkImage);
             statusLabel.setText("Logs loaded");
+            deleteLogsITEM.setDisable(false);
+            saveITEM.setDisable(false);
+            saveExitITEM.setDisable(false);
+            loadPrevITEM.setDisable(true);
+
+            if (!arePrevLogsAvailable()) {
+                deletePrevLogsITEM.setDisable(true);
+            } else {
+                deletePrevLogsITEM.setDisable(false);
+            }
         }
+    }
+
+    // Checks if the previous logs are available
+    public boolean arePrevLogsAvailable() {
+        boolean flag = true;
+
+        try {
+            FileInputStream fis = new FileInputStream(new File("data/logs.json"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+            String line;
+
+            if ((line = reader.readLine()) == null) {
+                flag = false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return flag;
     }
 
     @FXML
@@ -342,7 +373,26 @@ public class MainController implements Initializable {
     @FXML
     void deleteLogs(ActionEvent event) throws FileNotFoundException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Delete logs");
+        alert.setHeaderText("Delete actual logs");
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK){
+            Database.codeAVLTree.clearTree();
+            Database.fullNameAVLTree.clearTree();
+            Database.nameAVLTree.clearTree();
+            Database.lastNameAVLTree.clearTree();
+
+            loadedData = false;
+            updateLoadStatus();
+        }
+    }
+
+    @FXML
+    void deletePrevLogs(ActionEvent event) throws FileNotFoundException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Delete previous logs");
         alert.setContentText("Are you sure?");
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -351,7 +401,7 @@ public class MainController implements Initializable {
             PrintWriter pw = new PrintWriter("data/logs.json");
             pw.close();
 
-            loadedData = false;
+            loadPrevITEM.setDisable(true);
             updateLoadStatus();
         }
     }
@@ -381,21 +431,29 @@ public class MainController implements Initializable {
 
     @FXML
     void saveJSON(ActionEvent event) {
-        Database database = new Database();
 
-        new Thread(() -> {
-            // Indicates that the process is in progress
+        if (loadedData) {
+            Database database = new Database();
             statusLabel.setText("Saving data...");
-            verificationImage.setVisible(false);
-            progressIndicator.setVisible(true);
 
-            database.generatePreorderArray();
-            database.saveJSON();
+            new Thread(() -> {
+                // Indicates that the process is in progress
+                verificationImage.setVisible(false);
+                progressIndicator.setVisible(true);
 
-            loadedData = true;
+                database.generatePreorderArray();
+                database.saveJSON();
 
-            Platform.runLater(this::updateLoadStatus);
-        }).start();
+                loadedData = true;
+
+                Platform.runLater(this::updateLoadStatus);
+            }).start();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("There are not any logs at the moment");
+        }
+
     }
 
     @FXML
@@ -403,6 +461,7 @@ public class MainController implements Initializable {
         Database database = new Database();
 
         statusLabel.setText("Loading data...");
+        loadPrevITEM.setDisable(true);
 
         new Thread(() -> {
             // Indicates that the process is in progress

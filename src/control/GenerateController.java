@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import main.Main;
 import model.Database;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -99,9 +96,10 @@ public class GenerateController implements Initializable {
         progressPercentageText.setVisible(true);
         checkIcon.setVisible(false);
 
-        // Disables the generation buttons to avoid threading conflicts
+        // Disables the generation and back buttons to avoid threading conflicts
         generateDefBTN.setDisable(true);
         generateBTN.setDisable(true);
+        backBTN.setDisable(true);
 
         // Calls the thread to control the counter
         new Thread(() -> {
@@ -116,9 +114,8 @@ public class GenerateController implements Initializable {
             database.generateRecords(this);
             finishedGeneration = true;
 
-            // Enables the buttons and shows the check icon
-            generateDefBTN.setDisable(false);
-            generateBTN.setDisable(false);
+            // Shows the check icon and enables the back button
+            backBTN.setDisable(false);
             checkIcon.setVisible(true);
         }).start();
 
