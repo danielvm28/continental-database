@@ -321,8 +321,16 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void addRecord(ActionEvent event) {
-
+    void addRecord(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/AddRecord.fxml"));
+        loader.setController(new AddRecordController());
+        Parent parent = (Parent) loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.show();
+        Stage s = (Stage) getResultsBTN.getScene().getWindow();
+        s.close();
     }
 
     @FXML

@@ -12,12 +12,12 @@
       <Label layoutX="47.0" layoutY="44.0" />
       <Label layoutX="47.0" layoutY="57.0" text="Full name" />
       <Button layoutX="-164.0" layoutY="154.0" mnemonicParsing="false" />
-      <Button fx:id="buttomBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #e04343;" text="Back" textFill="WHITE" />
+      <Button fx:id="buttonBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #e04343;" text="Back" textFill="WHITE" />
       <Label layoutX="47.0" layoutY="136.0" />
       <Label layoutX="19.0" layoutY="270.0" text="The code would be: " />
       <TextField fx:id="textFieldFullName" layoutX="123.0" layoutY="53.0" />
       <Label fx:id="labelCode" layoutX="144.0" layoutY="269.0" prefHeight="18.0" prefWidth="107.0" />
-      <Button fx:id="buttonAddRecord" layoutX="236.0" layoutY="304.0" mnemonicParsing="false" onAction="#addButom" style="-fx-background-color: #3d9fff;" text="add" textFill="WHITE" />
+      <Button fx:id="buttonAddRecord" layoutX="236.0" layoutY="304.0" mnemonicParsing="false" onAction="#addButton" style="-fx-background-color: #3d9fff;" text="add" textFill="WHITE" />
       <Label layoutX="53.0" layoutY="102.0" text="Gender" />
       <ComboBox fx:id="comboBoxGender" layoutX="123.0" layoutY="98.0" prefWidth="150.0" />
       <Label layoutX="47.0" layoutY="145.0" text="Birth date" />
