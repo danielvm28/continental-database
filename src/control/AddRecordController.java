@@ -58,7 +58,7 @@ public class AddRecordController implements Initializable {
           alert.setTitle("Warning");
           boolean negative = false;
 
-          if (txFullName.split(" ").length> 2){
+          if (txFullName.split(" ").length == 1){
                alert.setHeaderText("Problems with the full name");
                alert.setContentText("Remember that the full name can only contain the first name and the last name");
                alert.show();
@@ -91,29 +91,22 @@ public class AddRecordController implements Initializable {
                } else {
                     try {
                          Database database = new Database();
-                         try {
-                              database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
-                                      Double.parseDouble(textFieldHeigth.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
-                         } catch (Exception e){
-                              alert.setHeaderText("Problems with the height");
-                              alert.setContentText("The height variable cannot contain letters or special characters. ");
-                              alert.show();
-                              negative = true;
-                         }
+                         database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
+                                 Double.parseDouble(textFieldHeigth.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
 
-                         if (!negative){
-                              FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/MainWindow.fxml"));
-                              loader.setController(new MainController());
-                              Parent parent = (Parent) loader.load();
-                              Stage stage = new Stage();
-                              Scene scene = new Scene(parent);
-                              stage.setScene(scene);
-                              stage.show();
-                              Stage s = (Stage) buttonAddRecord.getScene().getWindow();
-                              s.close();
-                         }
+                         MainController.loadedData = true;
+
+                         Main.loadMainWindow();
+
+                         Stage s = (Stage) buttonAddRecord.getScene().getWindow();
+                         s.close();
                     } catch (IOException e) {
                          e.printStackTrace();
+                    } catch (NumberFormatException e){
+                         alert.setHeaderText("Problems with the height");
+                         alert.setContentText("The height variable cannot contain letters or special characters. ");
+                         alert.show();
+                         negative = true;
                     }
                }
 
