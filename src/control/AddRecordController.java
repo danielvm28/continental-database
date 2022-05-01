@@ -56,35 +56,28 @@ public class AddRecordController implements Initializable {
           Alert alert;
           alert = new Alert(Alert.AlertType.WARNING);
           alert.setTitle("Warning");
-          boolean negative = false;
 
-          if (txFullName.split(" ").length == 1){
+          if (txFullName.split(" ").length != 2){
                alert.setHeaderText("Problems with the full name");
                alert.setContentText("Remember that the full name can only contain the first name and the last name");
                alert.show();
-               negative = true;
           } else {
                if (textFieldFullName.getText().isEmpty()){
                     message += "The full name is empty"+"\n";
-                    negative = true;
                }
-               if (comboBoxGender.getItems().isEmpty()){
+               if (comboBoxGender.getValue()==null){
                     message += "The gender is empty"+"\n";
-                    negative = true;
                }
                if (dateBirthDate.getValue()==null){
                     message += "The Date picker is empty"+"\n";
-                    negative = true;
                }
                if (textFieldHeigth.getText().isEmpty()){
                     message += "The height is empty"+"\n";
-                    negative = true;
                }
                if (textFieldNationality.getText().isEmpty()){
                     message += "The nationality is empty"+"\n";
-                    negative = true;
                }
-               if (negative){
+               if (message.length()>0){
                     alert.setHeaderText("Problem with some data");
                     alert.setContentText(message);
                     alert.show();
@@ -106,7 +99,6 @@ public class AddRecordController implements Initializable {
                          alert.setHeaderText("Problems with the height");
                          alert.setContentText("The height variable cannot contain letters or special characters. ");
                          alert.show();
-                         negative = true;
                     }
                }
 
