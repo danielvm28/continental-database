@@ -110,6 +110,13 @@ public class Database {
         codeAVLTree = new AVLTree<>(codeComparator);
     }
 
+    public void addPerson(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) throws DuplicateValueException {
+        fullNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
+        nameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
+        lastNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
+        codeAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
+    }
+
     public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
 
