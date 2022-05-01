@@ -22,7 +22,6 @@
                <items>
                   <MenuItem fx:id="loadPrevITEM" mnemonicParsing="false" onAction="#loadJSON" text="Load Previous Logs" />
                   <MenuItem fx:id="saveITEM" mnemonicParsing="false" onAction="#saveJSON" text="Save Logs" />
-                  <MenuItem fx:id="saveExitITEM" mnemonicParsing="false" onAction="#exitSaveJSON" text="Save and Exit" />
                   <MenuItem fx:id="deleteLogsITEM" mnemonicParsing="false" onAction="#deleteLogs" text="Delete Actual Logs" />
                   <MenuItem fx:id="deletePrevLogsITEM" mnemonicParsing="false" onAction="#deletePrevLogs" text="Delete Previous Logs" />
                </items>

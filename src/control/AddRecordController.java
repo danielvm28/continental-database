@@ -1,12 +1,8 @@
 package control;
 import exception.DuplicateValueException;
-import exception.NameException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Main;
@@ -36,7 +32,7 @@ public class AddRecordController implements Initializable {
      private TextField textFieldFullName;
 
      @FXML
-     private TextField textFieldHeigth;
+     private TextField textFieldHeight;
 
      @FXML
      private TextField textFieldNationality;
@@ -50,7 +46,7 @@ public class AddRecordController implements Initializable {
      }
 
      @FXML
-     void addButton(ActionEvent event) throws NameException, DuplicateValueException {
+     void addButton(ActionEvent event) throws DuplicateValueException {
           String txFullName = textFieldFullName.getText();
           String message = "";
           Alert alert;
@@ -71,7 +67,7 @@ public class AddRecordController implements Initializable {
                if (dateBirthDate.getValue()==null){
                     message += "The Date picker is empty"+"\n";
                }
-               if (textFieldHeigth.getText().isEmpty()){
+               if (textFieldHeight.getText().isEmpty()){
                     message += "The height is empty"+"\n";
                }
                if (textFieldNationality.getText().isEmpty()){
@@ -85,7 +81,7 @@ public class AddRecordController implements Initializable {
                     try {
                          Database database = new Database();
                          database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
-                                 Double.parseDouble(textFieldHeigth.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
+                                 Double.parseDouble(textFieldHeight.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
 
                          MainController.loadedData = true;
 
@@ -103,18 +99,11 @@ public class AddRecordController implements Initializable {
                }
 
           }
-
      }
 
      @FXML
      void back(ActionEvent event) throws IOException {
-          FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/MainWindow.fxml"));
-          loader.setController(new MainController());
-          Parent parent = (Parent) loader.load();
-          Stage stage = new Stage();
-          Scene scene = new Scene(parent);
-          stage.setScene(scene);
-          stage.show();
+          Main.loadMainWindow();
           Stage s = (Stage) buttonBack.getScene().getWindow();
           s.close();
      }

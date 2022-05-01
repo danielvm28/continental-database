@@ -32,9 +32,6 @@ public class MainController implements Initializable {
     private MenuItem saveITEM;
 
     @FXML
-    private MenuItem saveExitITEM;
-
-    @FXML
     private MenuItem deleteLogsITEM;
 
     @FXML
@@ -140,19 +137,20 @@ public class MainController implements Initializable {
         switch (searchMethod) {
             case FULL_NAME:
                 findComp = (A, B) -> {
-                    int lengthSubstring = stringToFind.length();
+                    int lengthSubstringA = stringToFind.length();
+                    int lengthSubstringB = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (A.getFullName().length() < lengthSubstring) {
-                        lengthSubstring = A.getFullName().length();
+                    if (A.getFullName().length() < lengthSubstringA) {
+                        lengthSubstringA = A.getFullName().length();
                     }
 
-                    if (B.getFullName().length() < lengthSubstring){
-                        lengthSubstring = B.getFullName().length();
+                    if (B.getFullName().length() < lengthSubstringB){
+                        lengthSubstringB = B.getFullName().length();
                     }
 
-                    String subFullNameA = A.getFullName().substring(0, lengthSubstring);
-                    String subFullNameB = B.getFullName().substring(0, lengthSubstring);
+                    String subFullNameA = A.getFullName().substring(0, lengthSubstringA).toLowerCase();
+                    String subFullNameB = B.getFullName().substring(0, lengthSubstringB).toLowerCase();
 
                     return subFullNameA.compareTo(subFullNameB);
                 };
@@ -174,19 +172,20 @@ public class MainController implements Initializable {
                     String[] namesA = A.getFullName().split(" ");
                     String[] namesB = B.getFullName().split(" ");
 
-                    int lengthSubstring = stringToFind.length();
+                    int lengthSubstringA = stringToFind.length();
+                    int lengthSubstringB = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (namesA[0].length() < lengthSubstring) {
-                        lengthSubstring = namesA[0].length();
+                    if (namesA[0].length() < lengthSubstringA) {
+                        lengthSubstringA = namesA[0].length();
                     }
 
-                    if (namesB[0].length() < lengthSubstring){
-                        lengthSubstring = namesB[0].length();
+                    if (namesB[0].length() < lengthSubstringB){
+                        lengthSubstringB = namesB[0].length();
                     }
 
-                    String subNameA = namesA[0].substring(0, lengthSubstring);
-                    String subNameB = namesB[0].substring(0, lengthSubstring);
+                    String subNameA = namesA[0].substring(0, lengthSubstringA).toLowerCase();
+                    String subNameB = namesB[0].substring(0, lengthSubstringB).toLowerCase();
 
                     return subNameA.compareTo(subNameB);
                 };
@@ -208,19 +207,20 @@ public class MainController implements Initializable {
                     String[] namesA = A.getFullName().split(" ");
                     String[] namesB = B.getFullName().split(" ");
 
-                    int lengthSubstring = stringToFind.length();
+                    int lengthSubstringA = stringToFind.length();
+                    int lengthSubstringB = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (namesA[1].length() < lengthSubstring) {
-                        lengthSubstring = namesA[1].length();
+                    if (namesA[1].length() < lengthSubstringA) {
+                        lengthSubstringA = namesA[1].length();
                     }
 
-                    if (namesB[1].length() < lengthSubstring){
-                        lengthSubstring = namesB[1].length();
+                    if (namesB[1].length() < lengthSubstringB){
+                        lengthSubstringB = namesB[1].length();
                     }
 
-                    String subLastNameA = namesA[1].substring(0, lengthSubstring);
-                    String subLastNameB = namesB[1].substring(0, lengthSubstring);
+                    String subLastNameA = namesA[1].substring(0, lengthSubstringA).toLowerCase();
+                    String subLastNameB = namesB[1].substring(0, lengthSubstringB).toLowerCase();
 
                     return subLastNameA.compareTo(subLastNameB);
                 };
@@ -241,19 +241,20 @@ public class MainController implements Initializable {
                 int codeToFind = Integer.parseInt(stringToFind);
 
                 findComp = (A, B) -> {
-                    int lengthSubstring = stringToFind.length();
+                    int lengthSubstringA = stringToFind.length();
+                    int lengthSubstringB = stringToFind.length();
 
                     // Assure that the substring indexes do not overflow
-                    if (String.valueOf(A.getCode()).length() < lengthSubstring) {
-                        lengthSubstring = String.valueOf(A.getCode()).length();
+                    if (String.valueOf(A.getCode()).length() < lengthSubstringA) {
+                        lengthSubstringA = String.valueOf(A.getCode()).length();
                     }
 
-                    if(String.valueOf(B.getCode()).length() < lengthSubstring){
-                        lengthSubstring = String.valueOf(B.getCode()).length();
+                    if(String.valueOf(B.getCode()).length() < lengthSubstringB){
+                        lengthSubstringB = String.valueOf(B.getCode()).length();
                     }
 
-                    String subCodeA = String.valueOf(A.getCode()).substring(0, lengthSubstring);
-                    String subCodeB = String.valueOf(B.getCode()).substring(0, lengthSubstring);
+                    String subCodeA = String.valueOf(A.getCode()).substring(0, lengthSubstringA).toLowerCase();
+                    String subCodeB = String.valueOf(B.getCode()).substring(0, lengthSubstringB).toLowerCase();
 
                     return subCodeA.compareTo(subCodeB);
                 };
@@ -305,7 +306,6 @@ public class MainController implements Initializable {
             statusLabel.setText("Logs not loaded");
             deleteLogsITEM.setDisable(true);
             saveITEM.setDisable(true);
-            saveExitITEM.setDisable(true);
 
             // Checks the status of the JSON file
             if (arePrevLogsAvailable()) {
@@ -319,7 +319,6 @@ public class MainController implements Initializable {
             statusLabel.setText("Logs loaded");
             deleteLogsITEM.setDisable(false);
             saveITEM.setDisable(false);
-            saveExitITEM.setDisable(false);
             loadPrevITEM.setDisable(true);
 
             if (!arePrevLogsAvailable()) {
@@ -362,20 +361,6 @@ public class MainController implements Initializable {
         stage.show();
         Stage s = (Stage) getResultsBTN.getScene().getWindow();
         s.close();
-    }
-
-    @FXML
-    void exitSaveJSON(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Exit and save logs");
-        alert.setContentText("Are you sure that you want to exit?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK){
-            saveITEM.fire();
-            System.exit(0);
-        }
     }
 
     @FXML
@@ -439,28 +424,21 @@ public class MainController implements Initializable {
 
     @FXML
     void saveJSON(ActionEvent event) {
+        Database database = new Database();
+        statusLabel.setText("Saving data...");
 
-        if (loadedData) {
-            Database database = new Database();
-            statusLabel.setText("Saving data...");
+        new Thread(() -> {
+            // Indicates that the process is in progress
+            verificationImage.setVisible(false);
+            progressIndicator.setVisible(true);
 
-            new Thread(() -> {
-                // Indicates that the process is in progress
-                verificationImage.setVisible(false);
-                progressIndicator.setVisible(true);
+            database.generatePreorderArray();
+            database.saveJSON();
 
-                database.generatePreorderArray();
-                database.saveJSON();
+            loadedData = true;
 
-                loadedData = true;
-
-                Platform.runLater(this::updateLoadStatus);
-            }).start();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("There are not any logs at the moment");
-        }
+            Platform.runLater(this::updateLoadStatus);
+        }).start();
 
     }
 

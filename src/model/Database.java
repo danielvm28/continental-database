@@ -29,8 +29,6 @@ public class Database {
         this.recordsNum = recordsNum;
         avlLogs = new ArrayList<>();
         codeSet = new HashSet<>();
-
-        generateComparators();
     }
 
     public Database() {
@@ -38,8 +36,6 @@ public class Database {
         this.recordsNum = MAX_RECORDS;
         avlLogs = new ArrayList<>();
         codeSet = new HashSet<>();
-
-        generateComparators();
     }
 
     public int getRecordsNum() {
@@ -119,6 +115,7 @@ public class Database {
 
     public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
+        generateComparators();
 
         try {
             ArrayList<Pair<String, String>> genderAndNames = new ArrayList<>(); // Males and females will be 50/50 in each age group
@@ -413,6 +410,8 @@ public class Database {
     }
 
     public void loadJSON() {
+        generateComparators();
+
         try{
             FileInputStream fis = new FileInputStream(new File("data/logs.json"));
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
