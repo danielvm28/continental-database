@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
@@ -271,6 +272,7 @@ public class MainController implements Initializable {
 
                 break;
         }
+
     }
 
     // Uses preorder traversal to get the related records to display on the TableView
@@ -403,7 +405,7 @@ public class MainController implements Initializable {
     void generateLogs(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/GenerateWindow.fxml"));
         loader.setController(new GenerateController());
-        Parent parent = (Parent) loader.load();
+        Parent parent = loader.load();
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
         stage.setScene(scene);
@@ -413,8 +415,16 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void getResults(ActionEvent event) {
-
+    void getResults(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/ResultsWindow.fxml"));
+        loader.setController(new ResultsController(coincidentRecords));
+        Parent parent = (Parent) loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.show();
+        Stage s = (Stage) getResultsBTN.getScene().getWindow();
+        s.close();
     }
 
     @FXML

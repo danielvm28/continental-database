@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="344.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.EditRecord">
+<AnchorPane prefHeight="344.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="84.0" layoutY="40.0" text="Edit Record">
          <font>
@@ -28,7 +27,7 @@
       <TextField fx:id="textNationality" layoutX="114.0" layoutY="235.0" />
       <Label layoutX="41.0" layoutY="272.0" text="Code" />
       <Label fx:id="labelCode" layoutX="113.0" layoutY="272.0" prefHeight="18.0" prefWidth="150.0" />
-      <Button fx:id="buttonBack" layoutX="13.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #e04343;" text="Back" textFill="WHITE" />
-      <Button fx:id="buttonEdit" layoutX="226.0" layoutY="303.0" mnemonicParsing="false" style="-fx-background-color: #3d9fff;" text="Edit" textFill="WHITE" />
+      <Button fx:id="buttonBack" layoutX="13.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #e04343;" text="Back" textFill="WHITE" />
+      <Button fx:id="buttonEdit" layoutX="226.0" layoutY="303.0" mnemonicParsing="false" onAction="#edit" style="-fx-background-color: #3d9fff;" text="Edit" textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -113,6 +113,13 @@ public class Database {
         codeAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
     }
 
+    public void deletePerson(Person person){
+        fullNameAVLTree.delete(person);
+        nameAVLTree.delete(person);
+        lastNameAVLTree.delete(person);
+        codeAVLTree.delete(person);
+    }
+
     public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
         generateComparators();
