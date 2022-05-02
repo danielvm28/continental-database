@@ -73,7 +73,7 @@ public class EditRecord implements Initializable {
     void edit(ActionEvent event) throws DuplicateValueException, IOException {
         Database database = new Database();
         database.deletePerson(personD);
-        database.addPerson(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), textHeight.getHeight(), textNationality.getText(), Integer.parseInt(labelCode.getText()));
+        database.addPerson(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
         Main.loadMainWindow();
         Stage s = (Stage) buttonEdit.getScene().getWindow();
         s.close();
