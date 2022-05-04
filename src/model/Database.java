@@ -106,7 +106,14 @@ public class Database {
         codeAVLTree = new AVLTree<>(codeComparator);
     }
 
-    public void addPerson(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) throws DuplicateValueException {
+    public static void clearTrees() {
+        Database.codeAVLTree.clearTree();
+        Database.fullNameAVLTree.clearTree();
+        Database.nameAVLTree.clearTree();
+        Database.lastNameAVLTree.clearTree();
+    }
+
+    public static void addPerson(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) throws DuplicateValueException {
         fullNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
         nameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
         lastNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
@@ -116,6 +123,7 @@ public class Database {
     public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
         generateComparators();
+        clearTrees();
 
         try {
             ArrayList<Pair<String, String>> genderAndNames = new ArrayList<>(); // Males and females will be 50/50 in each age group

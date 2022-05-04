@@ -36,5 +36,6 @@
          </font>
       </Text>
       <Label fx:id="progressPercentageText" layoutX="370.0" layoutY="154.0" prefHeight="17.0" prefWidth="33.0" />
+      <Text layoutX="136.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This action will overwrite the actual logs" />
    </children>
 </AnchorPane>

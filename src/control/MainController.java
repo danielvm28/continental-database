@@ -372,10 +372,11 @@ public class MainController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK){
-            Database.codeAVLTree.clearTree();
-            Database.fullNameAVLTree.clearTree();
-            Database.nameAVLTree.clearTree();
-            Database.lastNameAVLTree.clearTree();
+            Database.clearTrees();
+
+            searchBar.clear();
+            emergentList.getItems().clear();
+            getResultsBTN.setDisable(true);
 
             loadedData = false;
             updateLoadStatus();

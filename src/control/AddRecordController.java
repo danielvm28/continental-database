@@ -79,8 +79,7 @@ public class AddRecordController implements Initializable {
                     alert.show();
                } else {
                     try {
-                         Database database = new Database();
-                         database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
+                         Database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
                                  Double.parseDouble(textFieldHeight.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
 
                          MainController.loadedData = true;
