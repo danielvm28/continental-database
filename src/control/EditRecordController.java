@@ -7,11 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
@@ -81,12 +77,43 @@ public class EditRecordController implements Initializable {
         Database.deletePerson(personD);
 
         // TODO faltan verificaciones antes de añadir a la nueva persona, alertas de Helicoptero apache y todo incluido
+        String txFullName = textFullName.getText();
+        String message = "";
+        Alert alert;
+        alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        if (txFullName.split(" ").length != 2){
+            alert.setHeaderText("Problems with the full name");
+            alert.setContentText("Remember that the full name can only contain the first name and the last name");
+            alert.show();
+        } else {
+            if (txFullName.isEmpty()){
+                message += "The full name is empty"+"\n";
+            }
+            if (comboBoxGender.getValue()==null){
+                message += "The gender is empty"+"\n";
+            }
+            if (datePickerBirthDate.getValue()==null){
+                message += "The Date picker is empty"+"\n";
+            }
+            if (textHeight.getText().isEmpty()){
+                message += "The height is empty"+"\n";
+            }
+            if (textNationality.getText().isEmpty()){
+                message += "The nationality is empty"+"\n";
+            }
+            if (message.length()>0){
+                alert.setHeaderText("Problem with some data");
+                alert.setContentText(message);
+                alert.show();
+            } else {
+                personEdit = new Person(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
+                Database.addPerson(personEdit);
 
-        personEdit = new Person(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
-        Database.addPerson(personEdit);
-
-        editCoincidentRecords();
-        loadResultsWindow();
+                editCoincidentRecords();
+                loadResultsWindow();
+            }
+        }
     }
 
     public void editCoincidentRecords() {
