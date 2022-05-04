@@ -120,7 +120,7 @@ public class Database {
         codeAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
     }
 
-    public void deletePerson(Person person){
+    public static void deletePerson(Person person){
         fullNameAVLTree.delete(person);
         nameAVLTree.delete(person);
         lastNameAVLTree.delete(person);

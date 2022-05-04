@@ -15,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.Main;
 import model.Person;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -47,11 +46,22 @@ public class ResultsController implements Initializable {
     @FXML
     private TableView<Person> resultsTV;
 
+    private Person stClicked;
+
+    private final ObservableList<Person> people;
+
+    private final ArrayList<Person> coincidentRecords;
+
+    public ResultsController(ArrayList<Person> coincidentRecords) {
+        this.coincidentRecords = coincidentRecords;
+        people = FXCollections.observableArrayList(coincidentRecords);
+    }
+
     @FXML
     void editRecord(ActionEvent event) throws IOException {
         if (stClicked!=null){
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/EditRecord.fxml"));
-            loader.setController(new EditRecord(stClicked));
+            loader.setController(new EditRecordController(stClicked, coincidentRecords));
             Parent parent = loader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
@@ -67,13 +77,6 @@ public class ResultsController implements Initializable {
         Main.loadMainWindow();
         Stage s = (Stage) backBTN.getScene().getWindow();
         s.close();
-    }
-
-    Person stClicked;
-    ObservableList<Person> people;
-
-    public ResultsController(ArrayList<Person> coincidentRecords) {
-        people = FXCollections.observableArrayList(coincidentRecords);
     }
 
     @Override

@@ -8,26 +8,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="344.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="376.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="47.0" layoutY="44.0" />
-      <Label layoutX="47.0" layoutY="57.0" text="Full name" />
+      <Label layoutX="45.0" layoutY="90.0" text="Full name" />
       <Button layoutX="-164.0" layoutY="154.0" mnemonicParsing="false" />
       <Button fx:id="buttonBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" style="-fx-background-color: #e04343;" text="Back" textFill="WHITE" />
       <Label layoutX="47.0" layoutY="136.0" />
-      <Label layoutX="19.0" layoutY="270.0" text="The code would be: " />
-      <TextField fx:id="textFieldFullName" layoutX="123.0" layoutY="53.0" />
-      <Label fx:id="labelCode" layoutX="144.0" layoutY="269.0" prefHeight="18.0" prefWidth="107.0" />
-      <Button fx:id="buttonAddRecord" layoutX="236.0" layoutY="304.0" mnemonicParsing="false" onAction="#addButton" style="-fx-background-color: #3d9fff;" text="Add" textFill="WHITE" />
-      <Label layoutX="53.0" layoutY="102.0" text="Gender" />
-      <ComboBox fx:id="comboBoxGender" layoutX="123.0" layoutY="98.0" prefWidth="150.0" />
-      <Label layoutX="47.0" layoutY="145.0" text="Birth date" />
-      <DatePicker fx:id="dateBirthDate" layoutX="123.0" layoutY="141.0" prefHeight="26.0" prefWidth="150.0" />
-      <Label layoutX="27.0" layoutY="188.0" text="Height in meters" />
-      <TextField fx:id="textFieldHeight" layoutX="123.0" layoutY="184.0" prefHeight="26.0" prefWidth="150.0" />
-      <Label layoutX="43.0" layoutY="232.0" text="Nationality" />
-      <TextField fx:id="textFieldNationality" layoutX="123.0" layoutY="228.0" />
-      <Label layoutX="94.0" layoutY="13.0" text="Add Record">
+      <Label layoutX="17.0" layoutY="303.0" text="The code would be: " />
+      <TextField fx:id="textFieldFullName" layoutX="121.0" layoutY="86.0" />
+      <Label fx:id="labelCode" layoutX="142.0" layoutY="302.0" prefHeight="18.0" prefWidth="107.0" />
+      <Button fx:id="buttonAddRecord" layoutX="232.0" layoutY="337.0" mnemonicParsing="false" onAction="#addButton" style="-fx-background-color: #3d9fff;" text="Add" textFill="WHITE" />
+      <Label layoutX="51.0" layoutY="135.0" text="Gender" />
+      <ComboBox fx:id="comboBoxGender" layoutX="121.0" layoutY="131.0" prefWidth="150.0" />
+      <Label layoutX="45.0" layoutY="178.0" text="Birth date" />
+      <DatePicker fx:id="dateBirthDate" layoutX="121.0" layoutY="174.0" prefHeight="26.0" prefWidth="150.0" />
+      <Label layoutX="25.0" layoutY="221.0" text="Height in meters" />
+      <TextField fx:id="textFieldHeight" layoutX="121.0" layoutY="217.0" prefHeight="26.0" prefWidth="150.0" />
+      <Label layoutX="41.0" layoutY="265.0" text="Nationality" />
+      <TextField fx:id="textFieldNationality" layoutX="121.0" layoutY="261.0" />
+      <Label layoutX="94.0" layoutY="39.0" text="Add Record">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

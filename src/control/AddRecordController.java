@@ -39,7 +39,7 @@ public class AddRecordController implements Initializable {
 
      @Override
      public void initialize(URL location, ResourceBundle resources) {
-          String[] comboBoxString = {"Male", "Female", "Others"};
+          String[] comboBoxString = {"Male", "Female", "Other"};
           comboBoxGender.getItems().setAll(comboBoxString);
           Database database = new Database();
           labelCode.setText(database.generateCode()+"");
@@ -52,8 +52,9 @@ public class AddRecordController implements Initializable {
           Alert alert;
           alert = new Alert(Alert.AlertType.WARNING);
           alert.setTitle("Warning");
-          if (comboBoxGender.getValue().equals("Others")){
-               alert.setHeaderText("Problems whit the gender");
+
+          if (comboBoxGender.getValue().equals("Other")){
+               alert.setHeaderText("Problems with the gender");
                alert.setContentText("You asshole, its Male or Female, not Apache Helicopter :D");
                alert.show();
           } else if (txFullName.split(" ").length != 2){
