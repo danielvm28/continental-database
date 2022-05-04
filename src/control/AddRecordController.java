@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
+import model.Person;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +47,7 @@ public class AddRecordController implements Initializable {
      }
 
      @FXML
-     void addButton(ActionEvent event) throws DuplicateValueException {
+     void add(ActionEvent event) throws DuplicateValueException {
           String txFullName = textFieldFullName.getText();
           String message = "";
           Alert alert;
@@ -83,8 +84,9 @@ public class AddRecordController implements Initializable {
                     alert.show();
                } else {
                     try {
-                         Database.addPerson(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
+                         Person newPerson = new Person(txFullName, comboBoxGender.getValue(), dateBirthDate.getValue(),
                                  Double.parseDouble(textFieldHeight.getText()), textFieldNationality.getText(), Integer.parseInt(labelCode.getText()));
+                         Database.addPerson(newPerson);
 
                          MainController.loadedData = true;
 

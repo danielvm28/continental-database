@@ -113,11 +113,11 @@ public class Database {
         Database.lastNameAVLTree.clearTree();
     }
 
-    public static void addPerson(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) throws DuplicateValueException {
-        fullNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
-        nameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
-        lastNameAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
-        codeAVLTree.insert(new Person(fullName, gender, birthDate, height, nationality, code));
+    public static void addPerson(Person person) throws DuplicateValueException {
+        fullNameAVLTree.insert(person);
+        nameAVLTree.insert(person);
+        lastNameAVLTree.insert(person);
+        codeAVLTree.insert(person);
     }
 
     public static void deletePerson(Person person){

@@ -1,7 +1,6 @@
 package control;
 
 import exception.DuplicateValueException;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +73,7 @@ public class EditRecordController implements Initializable {
 
     @FXML
     void back(ActionEvent event) throws IOException {
-        loadResultsWIndow();
+        loadResultsWindow();
     }
 
     @FXML
@@ -84,10 +83,10 @@ public class EditRecordController implements Initializable {
         // TODO faltan verificaciones antes de añadir a la nueva persona, alertas de Helicoptero apache y todo incluido
 
         personEdit = new Person(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
-        Database.addPerson(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
+        Database.addPerson(personEdit);
 
         editCoincidentRecords();
-        loadResultsWIndow();
+        loadResultsWindow();
     }
 
     public void editCoincidentRecords() {
@@ -95,7 +94,7 @@ public class EditRecordController implements Initializable {
         coincidentRecordsList.add(personEdit);
     }
 
-    private void loadResultsWIndow() throws IOException {
+    private void loadResultsWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("../ui/ResultsWindow.fxml"));
         loader.setController(new ResultsController(coincidentRecordsList));
         Parent parent = (Parent) loader.load();

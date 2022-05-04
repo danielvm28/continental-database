@@ -18,7 +18,7 @@
       <Label layoutX="17.0" layoutY="303.0" text="The code would be: " />
       <TextField fx:id="textFieldFullName" layoutX="121.0" layoutY="86.0" />
       <Label fx:id="labelCode" layoutX="142.0" layoutY="302.0" prefHeight="18.0" prefWidth="107.0" />
-      <Button fx:id="buttonAddRecord" layoutX="232.0" layoutY="337.0" mnemonicParsing="false" onAction="#addButton" style="-fx-background-color: #3d9fff;" text="Add" textFill="WHITE" />
+      <Button fx:id="buttonAddRecord" layoutX="232.0" layoutY="337.0" mnemonicParsing="false" onAction="#add" style="-fx-background-color: #3d9fff;" text="Add" textFill="WHITE" />
       <Label layoutX="51.0" layoutY="135.0" text="Gender" />
       <ComboBox fx:id="comboBoxGender" layoutX="121.0" layoutY="131.0" prefWidth="150.0" />
       <Label layoutX="45.0" layoutY="178.0" text="Birth date" />
