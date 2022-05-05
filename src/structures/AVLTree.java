@@ -63,6 +63,8 @@ public class AVLTree<T extends Comparable<T>> implements AVLTreeI<T> {
 
     public void clearTree() {
         root = null;
+        size = 0;
+        preorderArray = new ArrayList<>();
     }
 
     @Override

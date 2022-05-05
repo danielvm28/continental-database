@@ -14,9 +14,64 @@ import java.util.*;
 public class Database {
     // Static tree structures
     public static AVLTree<Person> fullNameAVLTree = new AVLTree<>();
-    public static AVLTree<Person> nameAVLTree;
-    public static AVLTree<Person> lastNameAVLTree;
-    public static AVLTree<Person> codeAVLTree;
+
+    // Comparators to organize the AVL Trees
+    public static Comparator<Person> nameComparator = new Comparator<Person>() {
+        @Override
+        public int compare(Person A, Person B) {
+            int nameOutput = 0;
+            int codeOutput = 0;
+
+            String[] namesA = A.getFullName().split(" ");
+            String[] namesB = B.getFullName().split(" ");
+
+            nameOutput = namesA[0].compareTo(namesB[0]);
+
+            if (nameOutput == 0) {
+                codeOutput = A.getCode() - B.getCode();
+
+                return codeOutput;
+            } else {
+                return nameOutput;
+            }
+        }
+    };
+
+    public static Comparator<Person> lastNameComparator = new Comparator<Person>() {
+        @Override
+        public int compare(Person A, Person B) {
+            int lastNameOutput = 0;
+            int codeOutput = 0;
+
+            String[] namesA = A.getFullName().split(" ");
+            String[] namesB = B.getFullName().split(" ");
+
+            lastNameOutput = namesA[1].compareTo(namesB[1]);
+
+            if (lastNameOutput == 0) {
+                codeOutput = A.getCode() - B.getCode();
+
+                return codeOutput;
+            } else {
+                return lastNameOutput;
+            }
+        }
+    };
+
+    public static Comparator<Person> codeComparator = new Comparator<Person>() {
+        @Override
+        public int compare(Person A, Person B) {
+            int codeOutput = 0;
+
+            codeOutput = A.getCode() - B.getCode();
+
+            return codeOutput;
+        }
+    };
+
+    public static AVLTree<Person> nameAVLTree = new AVLTree<>(nameComparator);
+    public static AVLTree<Person> lastNameAVLTree = new AVLTree<>(lastNameComparator);
+    public static AVLTree<Person> codeAVLTree = new AVLTree<>(codeComparator);
 
     public static final int MAX_RECORDS = 1000000;
 
@@ -46,64 +101,20 @@ public class Database {
         this.recordsNum = recordsNum;
     }
 
-    public void generateComparators() {
-        // Comparators to organize the AVL Trees
-        Comparator<Person> nameComparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person A, Person B) {
-                int nameOutput = 0;
-                int codeOutput = 0;
+    public HashSet<Integer> getCodeSet() {
+        return codeSet;
+    }
 
-                String[] namesA = A.getFullName().split(" ");
-                String[] namesB = B.getFullName().split(" ");
+    public void setCodeSet(HashSet<Integer> codeSet) {
+        this.codeSet = codeSet;
+    }
 
-                nameOutput = namesA[0].compareTo(namesB[0]);
+    public ArrayList<Person> getAvlLogs() {
+        return avlLogs;
+    }
 
-                if (nameOutput == 0) {
-                    codeOutput = A.getCode() - B.getCode();
-
-                    return codeOutput;
-                } else {
-                    return nameOutput;
-                }
-            }
-        };
-
-        Comparator<Person> lastNameComparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person A, Person B) {
-                int lastNameOutput = 0;
-                int codeOutput = 0;
-
-                String[] namesA = A.getFullName().split(" ");
-                String[] namesB = B.getFullName().split(" ");
-
-                lastNameOutput = namesA[1].compareTo(namesB[1]);
-
-                if (lastNameOutput == 0) {
-                    codeOutput = A.getCode() - B.getCode();
-
-                    return codeOutput;
-                } else {
-                    return lastNameOutput;
-                }
-            }
-        };
-
-        Comparator<Person> codeComparator = new Comparator<Person>() {
-            @Override
-            public int compare(Person A, Person B) {
-                int codeOutput = 0;
-
-                codeOutput = A.getCode() - B.getCode();
-
-                return codeOutput;
-            }
-        };
-
-        nameAVLTree = new AVLTree<>(nameComparator);
-        lastNameAVLTree = new AVLTree<>(lastNameComparator);
-        codeAVLTree = new AVLTree<>(codeComparator);
+    public void setAvlLogs(ArrayList<Person> avlLogs) {
+        this.avlLogs = avlLogs;
     }
 
     public static void clearTrees() {
@@ -129,7 +140,6 @@ public class Database {
 
     public void generateRecords(GenerateController generateController){
         int recordsCounter = 0;
-        generateComparators();
         clearTrees();
 
         try {
@@ -240,7 +250,9 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
+
+                    if (generateController != null)
+                        generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup2Iterations; j++) {
@@ -260,7 +272,8 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
+                    if (generateController != null)
+                        generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup3Iterations; j++) {
@@ -280,7 +293,8 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
+                    if (generateController != null)
+                        generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup4Iterations; j++) {
@@ -300,7 +314,8 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
+                    if (generateController != null)
+                        generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 for (int j = 0; j < ageGroup5Iterations; j++) {
@@ -320,7 +335,8 @@ public class Database {
                     codeAVLTree.insert(newPerson);
 
                     recordsCounter++;
-                    generateController.updateProgressBar((double) recordsCounter / recordsNum);
+                    if (generateController != null)
+                        generateController.updateProgressBar((double) recordsCounter / recordsNum);
                 }
 
                 nationCounter++;
@@ -425,7 +441,6 @@ public class Database {
     }
 
     public void loadJSON() {
-        generateComparators();
 
         try{
             FileInputStream fis = new FileInputStream(new File("data/logs.json"));

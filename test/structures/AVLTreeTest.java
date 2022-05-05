@@ -30,8 +30,11 @@ class AVLTreeTest {
     @Test
     void find() throws DuplicateValueException {
         setupStage();
+
+        // Attempt to find Howard Bundy
         String stringToFind = "ho";
 
+        // Copy of the Comparator used on the Main Window to make suggestions on the emergent list
         Comparator<Person> findComp = (A, B) -> {
             int lengthSubstringA = stringToFind.length();
             int lengthSubstringB = stringToFind.length();
@@ -54,6 +57,7 @@ class AVLTreeTest {
         Person pToFind = new Person(stringToFind);
         Node<Person> foundNode = avlTree.find(pToFind, findComp);
 
+        // Check if Howard Bundy was found
         assertEquals(foundNode.getValue(), personToFind);
     }
 }
