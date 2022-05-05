@@ -27,6 +27,9 @@ public class EditRecordController implements Initializable {
     private Button buttonEdit;
 
     @FXML
+    private Button buttonDelete;
+
+    @FXML
     private ComboBox<String> comboBoxGender;
 
     @FXML
@@ -132,5 +135,12 @@ public class EditRecordController implements Initializable {
 
         Stage s = (Stage) buttonBack.getScene().getWindow();
         s.close();
+    }
+
+    @FXML
+    void deletePerson(ActionEvent event) throws IOException {
+        coincidentRecordsList.remove(personD);
+        Database.deletePerson(personD);
+        loadResultsWindow();
     }
 }

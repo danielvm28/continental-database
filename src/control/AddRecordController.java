@@ -54,11 +54,7 @@ public class AddRecordController implements Initializable {
           alert = new Alert(Alert.AlertType.WARNING);
           alert.setTitle("Warning");
 
-          if (comboBoxGender.getValue().equals("Other")){
-               alert.setHeaderText("Problems with the gender");
-               alert.setContentText("You asshole, its Male or Female, not Apache Helicopter :D");
-               alert.show();
-          } else if (txFullName.split(" ").length != 2){
+          if (txFullName.split(" ").length != 2){
                alert.setHeaderText("Problems with the full name");
                alert.setContentText("Remember that the full name can only contain the first name and the last name");
                alert.show();
