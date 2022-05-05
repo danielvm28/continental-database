@@ -116,7 +116,7 @@ public class EditRecordController implements Initializable {
                 alert.setContentText(message);
                 alert.show();
             } else {
-                personEdit = new Person(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()));
+                personEdit = new Person(textFullName.getText(), comboBoxGender.getValue(), datePickerBirthDate.getValue(), Double.parseDouble(textHeight.getText()), textNationality.getText(), Integer.parseInt(labelCode.getText()), personD.getPhotoNumber());
                 Database.addPerson(personEdit);
 
                 editCoincidentRecords();
