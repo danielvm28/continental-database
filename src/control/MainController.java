@@ -254,8 +254,8 @@ public class MainController implements Initializable {
                         lengthSubstringB = String.valueOf(B.getCode()).length();
                     }
 
-                    String subCodeA = String.valueOf(A.getCode()).substring(0, lengthSubstringA).toLowerCase();
-                    String subCodeB = String.valueOf(B.getCode()).substring(0, lengthSubstringB).toLowerCase();
+                    String subCodeA = String.valueOf(A.getCode()).substring(0, lengthSubstringA);
+                    String subCodeB = String.valueOf(B.getCode()).substring(0, lengthSubstringB);
 
                     return subCodeA.compareTo(subCodeB);
                 };

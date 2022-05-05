@@ -64,11 +64,7 @@ public class Database {
     public static Comparator<Person> codeComparator = new Comparator<Person>() {
         @Override
         public int compare(Person A, Person B) {
-            int codeOutput = 0;
-
-            codeOutput = A.getCode() - B.getCode();
-
-            return codeOutput;
+            return String.valueOf(A.getCode()).compareTo(String.valueOf(B.getCode()));
         }
     };
 
