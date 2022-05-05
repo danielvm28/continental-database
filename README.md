@@ -18,5 +18,4 @@ This project is focused in managing a persistent database representing the popul
 
 ## Authors
 * Daniel Valencia
-* Juan Pablo Uribe
 * Juan Camilo Bernal
