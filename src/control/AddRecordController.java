@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import main.Main;
 import model.Database;
 import model.Person;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

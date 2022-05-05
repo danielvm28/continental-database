@@ -1,7 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-
 import java.time.LocalDate;
 
 public class Person implements Comparable<Person>{
@@ -107,7 +105,7 @@ public class Person implements Comparable<Person>{
         int fullNameOutput = 0;
         int codeOutput = 0;
 
-        fullNameOutput = A.fullName.compareTo(B.fullName);
+        fullNameOutput = A.fullName.toLowerCase().compareTo(B.fullName.toLowerCase());
 
         if (fullNameOutput == 0) {
             codeOutput = A.code - B.code;

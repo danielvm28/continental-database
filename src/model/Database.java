@@ -2,12 +2,9 @@ package model;
 
 import com.google.gson.Gson;
 import control.GenerateController;
-import control.MainController;
 import exception.DuplicateValueException;
-import javafx.scene.image.Image;
 import javafx.util.Pair;
 import structures.AVLTree;
-
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,7 +25,7 @@ public class Database {
             String[] namesA = A.getFullName().split(" ");
             String[] namesB = B.getFullName().split(" ");
 
-            nameOutput = namesA[0].compareTo(namesB[0]);
+            nameOutput = namesA[0].toLowerCase().compareTo(namesB[0].toLowerCase());
 
             if (nameOutput == 0) {
                 codeOutput = A.getCode() - B.getCode();
@@ -49,7 +46,7 @@ public class Database {
             String[] namesA = A.getFullName().split(" ");
             String[] namesB = B.getFullName().split(" ");
 
-            lastNameOutput = namesA[1].compareTo(namesB[1]);
+            lastNameOutput = namesA[1].toLowerCase().compareTo(namesB[1].toLowerCase());
 
             if (lastNameOutput == 0) {
                 codeOutput = A.getCode() - B.getCode();
@@ -71,25 +68,26 @@ public class Database {
     public static AVLTree<Person> nameAVLTree = new AVLTree<>(nameComparator);
     public static AVLTree<Person> lastNameAVLTree = new AVLTree<>(lastNameComparator);
     public static AVLTree<Person> codeAVLTree = new AVLTree<>(codeComparator);
+    public static HashSet<Integer> codeSet = new HashSet<>();
 
     public static final int MAX_RECORDS = 1000000;
 
     // private attributes for serialization
     private int recordsNum;
-    private HashSet<Integer> codeSet;
+    private ArrayList<Integer> codeSetArr;
     private ArrayList<Person> avlLogs;
 
     public Database(int recordsNum) {
         this.recordsNum = recordsNum;
         avlLogs = new ArrayList<>();
-        codeSet = new HashSet<>();
+        codeSetArr = new ArrayList<>();
     }
 
     public Database() {
         // Default records value
         this.recordsNum = MAX_RECORDS;
         avlLogs = new ArrayList<>();
-        codeSet = new HashSet<>();
+        codeSetArr = new ArrayList<>();
     }
 
     public int getRecordsNum() {
@@ -114,6 +112,14 @@ public class Database {
 
     public void setAvlLogs(ArrayList<Person> avlLogs) {
         this.avlLogs = avlLogs;
+    }
+
+    public ArrayList<Integer> getCodeSetArr() {
+        return codeSetArr;
+    }
+
+    public void setCodeSetArr(ArrayList<Integer> codeSetArr) {
+        this.codeSetArr = codeSetArr;
     }
 
     public static void clearTrees() {
@@ -344,6 +350,9 @@ public class Database {
             // Generate the preorder arrays after the generation of logs is finished
             generatePreorderArray();
 
+            // Generate the code array after the person generation
+            generateCodeArray();
+
         } catch (IOException | DuplicateValueException e) {
             e.printStackTrace();
         }
@@ -426,6 +435,14 @@ public class Database {
         }
     }
 
+    public void generateCodeArray() {
+        codeSetArr.addAll(codeSet);
+    }
+
+    public void initializeCodeSetWithList() {
+        codeSet.addAll(codeSetArr);
+    }
+
     public void saveJSON() {
         try {
             Gson gson = new Gson();
@@ -459,12 +476,13 @@ public class Database {
 
             if (data != null) {
                 avlLogs = data.avlLogs;
-                codeSet = data.codeSet;
+                codeSetArr = data.codeSetArr;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         initializeTreesWithSavedLogs();
+        initializeCodeSetWithList();
     }
 }

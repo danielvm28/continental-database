@@ -106,6 +106,12 @@ public class GenerateController implements Initializable {
             while (!finishedGeneration) {
                 long dif = ChronoUnit.SECONDS.between(startGenerationTime, Instant.now());
                 timeText.setText(dif + " s");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
 

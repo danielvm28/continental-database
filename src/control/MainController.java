@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
@@ -444,6 +443,7 @@ public class MainController implements Initializable {
             progressIndicator.setVisible(true);
 
             database.generatePreorderArray();
+            database.generateCodeArray();
             database.saveJSON();
 
             loadedData = true;

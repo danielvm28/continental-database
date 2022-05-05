@@ -1,7 +1,6 @@
 package structures;
 
 import exception.DuplicateValueException;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
