@@ -1,14 +1,13 @@
 # Continental Database
 
-This project is focused in managing a database representing the population of America. An AVL Tree is used to accomplish the task of searching, adding and deleting specific records.
+This project is focused in managing a persistent database representing the population of America. An AVL Tree is used to accomplish the task of searching, adding and deleting specific records. All the CRUD (Create, Read, Update and Delete) operations are done through an interface designed with JavaFX.
 
 -------------------------------------------------------------------------------------------------------------------------
 
 ## Program Requirements
 * Java 1.8
 * JavaFX
-* Eclipse IDE or Intellij IDEA
-* Windows 10
+* Java IDE such as Eclipse IDE or Intellij IDEA
 
 ## Design
 * [Class diagram](https://github.com/danielvm28/continental-database/blob/main/docs/ContinentalDatabaseClassDiagram.pdf)
