@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.time.LocalDate;
 
 public class Person implements Comparable<Person>{
@@ -10,7 +12,7 @@ public class Person implements Comparable<Person>{
     private LocalDate birthDate;
     private double height;
     private String nationality;
-    // Photo missing
+    private int photoNumber;
 
     public Person(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code) {
         this.fullName = fullName;
@@ -19,6 +21,17 @@ public class Person implements Comparable<Person>{
         this.height = height;
         this.nationality = nationality;
         this.code = code;
+        this.photoNumber = 0;
+    }
+
+    public Person(String fullName, String gender, LocalDate birthDate, double height, String nationality, int code, int photoNumber) {
+        this.fullName = fullName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.height = height;
+        this.nationality = nationality;
+        this.code = code;
+        this.photoNumber = photoNumber;
     }
 
     // Constructors to find partial results of emergent list
@@ -76,6 +89,14 @@ public class Person implements Comparable<Person>{
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public int getPhotoNumber() {
+        return photoNumber;
+    }
+
+    public void setPhotoNumber(int photoNumber) {
+        this.photoNumber = photoNumber;
     }
 
     // Compares according to the full name and code

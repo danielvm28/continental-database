@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import main.Main;
 import model.Database;
@@ -47,6 +49,9 @@ public class EditRecordController implements Initializable {
     @FXML
     private TextField textNationality;
 
+    @FXML
+    private ImageView photo;
+
     private final Person personD;
 
     private Person personEdit;
@@ -61,6 +66,7 @@ public class EditRecordController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String[] comboBoxString = {"Male", "Female", "Other"};
+        photo.setImage(new Image("images/user_img_"+personD.getPhotoNumber()+".png"));
         comboBoxGender.getItems().setAll(comboBoxString);
         textFullName.setText(personD.getFullName());
         comboBoxGender.setValue(personD.getGender());

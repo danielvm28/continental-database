@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import control.GenerateController;
 import control.MainController;
 import exception.DuplicateValueException;
+import javafx.scene.image.Image;
 import javafx.util.Pair;
 import structures.AVLTree;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -384,7 +387,8 @@ public class Database {
         LocalDate dateOfBirth = LocalDate.now().minusDays(random.nextInt(200)).minusYears(age);
 
         int code = generateCode();
-        double height = (random.nextInt(50) + 150) * 0.01;
+        BigDecimal bd = BigDecimal.valueOf((random.nextInt(50) + 150) * 0.01).setScale(2, RoundingMode.HALF_UP);
+        double height = bd.doubleValue();
 
         // Boys
         if (selectedGender.equals("Male")) {
@@ -397,8 +401,9 @@ public class Database {
         String lastName = lastNames.get(random.nextInt(162253));
         String fullName = name + " " + lastName;
         String gender = genderAndNameSelection.getKey();
+        int photoNumber = random.nextInt(5) + 1;
 
-        return new Person(fullName, gender, dateOfBirth, height, actualNation, code);
+        return new Person(fullName, gender, dateOfBirth, height, actualNation, code, photoNumber);
     }
 
     /**
